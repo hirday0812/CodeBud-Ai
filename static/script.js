@@ -127,7 +127,8 @@ analyzeBtn.addEventListener("click", async () => {
     heading.textContent = "Analysis Result";
 
     const output = document.createElement("pre");
-    output.textContent = data.result;
+    const formattedHTML = marked.parse(data.result);
+    output.innerHTML = DOMPurify.sanitize(formattedHTML);
     output.style.whiteSpace = "pre-wrap";
 
     result.appendChild(heading);
