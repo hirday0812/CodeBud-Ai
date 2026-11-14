@@ -27,6 +27,7 @@ def analyze():
 
     code = data.get("code", "").strip()
     language = data.get("language", "").strip()
+    print("Selected language received:", language)
     task = data.get("task", "").strip()
     print("Selected task received:", task)
 
@@ -84,19 +85,38 @@ Follow this exact format:
 Explain the main purpose in 1-2 simple sentences.
 
 ## Line-by-Line Explanation
+
 Explain every important line separately.
-Show the original line of code followed by its meaning.
-Use simple words and beginner-friendly examples.
+
+For EACH line, follow this format:
+
+### Line 1: `original code`
+Explain what this line does in simple language.
+
+---
+
+### Line 2: `original code`
+Explain what this line does in simple language.
+
+---
+
+Continue this format for every important line.
+
+IMPORTANT:
+- Always put a horizontal separator (---) between explanations.
+- Keep each line's explanation in its own section.
+- Explain programming keywords and symbols where useful.
+- Do not combine multiple lines into one explanation.
 
 ## How the Code Works
 Explain the complete execution flow in numbered steps.
 
 ## Expected Output
 Show the output in a code block.
-If the output depends on user input, explain that.
+
+If output depends on user input, explain that.
 
 Keep the explanation clear and concise.
-Do not repeat the same information.
 Never invent output.
 """,
 
@@ -137,22 +157,35 @@ Important rules:
     prompt = f"""
 You are a precise programming assistant.
 
-Do not introduce yourself.
-Do not greet the user.
-Do not repeat the user's request.
-Start directly with the answer.
-Avoid phrases such as "Let's look at your code"
-or "Here is the breakdown".
+STRICT LANGUAGE RULE:
+The selected programming language is: {language}
 
-Programming language: {language}
-User's request: {task}
+You MUST follow the selected language.
+Never change the selected language yourself.
+
+Examples:
+- If selected language is Python, explain using Python.
+- If selected language is C, explain using C.
+- If selected language is C++, explain using C++.
+- If selected language is Java, explain using Java.
+
+If the code belongs to a different language:
+1. Clearly mention the language mismatch.
+2. Do not convert the code into another language.
+3. Do not explain it as if it belongs to the selected language.
+
+User's selected task: {task}
 
 {task_instructions[task]}
 
-Use simple language suitable for beginners.
-Format your response using headings, bullet points and code blocks.
+Additional rules:
+- Use simple language suitable for beginners.
+- Do not greet or introduce yourself.
+- Start directly with the answer.
+- Follow the requested response format.
+- Never invent code details or output.
 
-Code:
+User's code:
 {code}
 """
 
