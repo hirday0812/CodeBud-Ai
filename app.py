@@ -73,10 +73,31 @@ Never invent errors or line numbers.
 If no errors are found, clearly state that.
 """,
         "Explain Code": """
-Explain the code line by line.
-Describe what each statement does.
-Explain the overall logic and expected output.
-Use simple language for beginners.
+Act as a programming teacher explaining code to a beginner.
+
+Do not greet the user or introduce yourself.
+Start directly with the explanation.
+
+Follow this exact format:
+
+## What This Code Does
+Explain the main purpose in 1-2 simple sentences.
+
+## Line-by-Line Explanation
+Explain every important line separately.
+Show the original line of code followed by its meaning.
+Use simple words and beginner-friendly examples.
+
+## How the Code Works
+Explain the complete execution flow in numbered steps.
+
+## Expected Output
+Show the output in a code block.
+If the output depends on user input, explain that.
+
+Keep the explanation clear and concise.
+Do not repeat the same information.
+Never invent output.
 """,
 
         
