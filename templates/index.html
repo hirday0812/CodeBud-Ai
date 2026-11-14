@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CodeBuddy AI | Code Analysis</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="brand-icon">CB</div>
+        <span>CodeBuddy <strong>AI</strong></span>
+      </div>
+
+      <div class="nav-right">
+        <span class="nav-status">
+          <span class="status-dot"></span>
+          AI Assistant
+        </span>
+
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          aria-label="Switch theme"
+          title="Switch theme"
+        >
+          <span id="themeIcon">☾</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+      <section class="page-heading">
+        <div>
+          <p class="eyebrow">DEVELOPER TOOLS</p>
+
+          <h1>Code Analysis</h1>
+
+          <p class="description">
+            Understand your code, identify errors and improve your programming
+            skills with AI.
+          </p>
+        </div>
+      </section>
+
+      <!-- Workspace -->
+      <section class="workspace">
+        <!-- Editor Section -->
+        <div class="panel editor-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Code Editor</h2>
+              <p>Enter the code you want to analyze.</p>
+            </div>
+
+            <span class="panel-number">01</span>
+          </div>
+
+          <!-- Selectors -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="language"> Programming Language </label>
+
+              <select id="language">
+                <option value="Python">Python</option>
+                <option value="C">C</option>
+                <option value="C++">C++</option>
+                <option value="Java">Java</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="task"> Analysis Type </label>
+
+              <select id="task">
+                <option value="Explain Code">Explain Code</option>
+
+                <option value="Find Errors">Find Errors</option>
+
+                <option value="Improve Code">Improve Code</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Code Input -->
+          <div class="editor-label">
+            <label for="codeInput">Source Code</label>
+
+            <span class="file-type" id="fileType"> PYTHON </span>
+          </div>
+
+          <textarea
+            id="codeInput"
+            spellcheck="false"
+            placeholder="// Write or paste your code here..."
+          ></textarea>
+
+          <div class="editor-footer">
+            <span id="charCount">0 characters</span>
+
+            <button id="clearBtn" class="text-button">Clear editor</button>
+          </div>
+
+          <button id="analyzeBtn" class="primary-button">
+            Analyze Code
+            <span>→</span>
+          </button>
+
+          <p class="privacy-note">
+            Your code will be processed by the AI service when analysis is
+            connected.
+          </p>
+        </div>
+
+        <!-- Results Section -->
+        <div class="panel result-panel">
+          <div class="panel-header">
+            <div>
+              <h2>Analysis Results</h2>
+              <p>AI-generated code insights appear here.</p>
+            </div>
+
+            <span class="panel-number">02</span>
+          </div>
+
+          <div id="result" class="result-content">
+            <div class="empty-state">
+              <div class="empty-icon">⌘</div>
+
+              <h3>Nothing to analyse yet</h3>
+
+              <p>
+                Add your code in the editor and select an analysis type to get
+                started.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span>CodeBuddy AI</span>
+
+        <span>AI-powered programming assistant</span>
+      </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>
