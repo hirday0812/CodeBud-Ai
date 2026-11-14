@@ -484,3 +484,53 @@ textarea:focus {
   padding: 2px 5px;
   border-radius: 4px;
 }
+
+.error-highlight {
+  background-color: #fff0f0;
+  border-left: 4px solid #dc2626;
+  color: #b91c1c;
+  padding: 12px 16px;
+  margin: 12px 0 20px;
+  border-radius: 6px;
+}
+
+.error-highlight h2,
+.error-highlight h3 {
+  color: #dc2626;
+}
+
+body.dark-mode .error-highlight {
+  background-color: #3b1717;
+  color: #fecaca;
+}
+
+.error-highlight {
+  background: #fff0f0;
+  border: 1px solid #fecaca;
+  border-left: 5px solid #dc2626;
+  color: #991b1b;
+  padding: 15px 18px;
+  margin: 15px 0;
+  border-radius: 7px;
+}
+
+.error-highlight h1,
+.error-highlight h2,
+.error-highlight h3,
+.error-highlight h4 {
+  color: #dc2626;
+}
+
+:root[data-theme="dark"] .error-highlight {
+  background: #351919;
+  border-color: #7f1d1d;
+  border-left-color: #ef4444;
+  color: #fecaca;
+}
+
+:root[data-theme="dark"] .error-highlight h1,
+:root[data-theme="dark"] .error-highlight h2,
+:root[data-theme="dark"] .error-highlight h3,
+:root[data-theme="dark"] .error-highlight h4 {
+  color: #f87171;
+}

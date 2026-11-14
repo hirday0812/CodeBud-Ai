@@ -91,6 +91,7 @@ analyzeBtn.addEventListener("click", async () => {
   const code = codeInput.value.trim();
   const selectedLanguage = language.value;
   const selectedTask = task.value;
+  console.log("Selected task:", selectedTask);
 
   if (!code) {
     alert("Please enter some code first.");
@@ -126,10 +127,34 @@ analyzeBtn.addEventListener("click", async () => {
     const heading = document.createElement("h3");
     heading.textContent = "Analysis Result";
 
-    const output = document.createElement("pre");
+    const output = document.createElement("div");
     const formattedHTML = marked.parse(data.result);
     output.innerHTML = DOMPurify.sanitize(formattedHTML);
-    output.style.whiteSpace = "pre-wrap";
+
+    // Highlight the error section in red
+    const errorHeading = [...output.querySelectorAll("h1, h2, h3, h4")].find(
+      (h) => h.textContent.includes("Error Found"),
+    );
+
+    if (errorHeading) {
+      const errorBox = document.createElement("div");
+      errorBox.className = "error-highlight";
+
+      const parent = errorHeading.parentNode;
+      parent.insertBefore(errorBox, errorHeading);
+
+      let current = errorHeading;
+
+      while (current) {
+        if (current !== errorHeading && /^H[1-4]$/.test(current.tagName)) {
+          break;
+        }
+
+        const next = current.nextElementSibling;
+        errorBox.appendChild(current);
+        current = next;
+      }
+    }
 
     result.appendChild(heading);
     result.appendChild(output);

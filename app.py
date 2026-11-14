@@ -4,15 +4,11 @@ from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from google import genai
 
-# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 
-# Get Gemini API key
 api_key = os.getenv("GEMINI_API_KEY")
-
-# Create Gemini client
 client = genai.Client(api_key=api_key) if api_key else None
 
 
@@ -32,34 +28,87 @@ def analyze():
     code = data.get("code", "").strip()
     language = data.get("language", "").strip()
     task = data.get("task", "").strip()
+    print("Selected task received:", task)
 
     if not code:
         return jsonify({"error": "Please enter some code first."}), 400
 
     if language not in ["Python", "C", "C++", "Java"]:
-        return jsonify({"error": "Please select a valid programming language."}), 400
+        return jsonify({"error": "Invalid programming language."}), 400
 
     if task not in ["Explain Code", "Find Errors", "Improve Code"]:
-        return jsonify({"error": "Please select a valid analysis option."}), 400
+        return jsonify({"error": "Invalid task selected."}), 400
 
     if len(code) > 12000:
-        return jsonify({"error": "Code is too long. Please keep it under 12,000 characters."}), 400
+        return jsonify({"error": "Code is too long."}), 400
+
+    task_instructions = {
+      "Find Errors": """
+Act as a precise code debugger.
+
+Start directly with the error. No greeting or introduction.
+
+Follow this exact format:
+
+## 🔴 Error Found
+**Error:** Write the exact error name.
+**Line:** Mention the line number if it can be identified.
+**Problematic Code:**
+Show the line of code causing the error.
+
+## Why This Error Occurs
+Explain the reason in simple language.
+
+## Step-by-Step Explanation
+Explain how the program reaches this error.
+
+## How to Fix It
+Show the corrected code.
+
+## Expected Output
+Show the output after fixing the error.
+
+If there are multiple errors, list them separately.
+Never invent errors or line numbers.
+If no errors are found, clearly state that.
+""",
+        "Explain Code": """
+Explain the code line by line.
+Describe what each statement does.
+Explain the overall logic and expected output.
+Use simple language for beginners.
+""",
+
+        
+
+
+        "Improve Code": """
+Review the code for readability, efficiency,
+structure and good programming practices.
+
+Provide an improved version.
+Explain the important changes.
+Preserve the original functionality.
+"""
+    }
 
     prompt = f"""
-You are CodeBuddy AI, a helpful programming assistant.
+You are a precise programming assistant.
+
+Do not introduce yourself.
+Do not greet the user.
+Do not repeat the user's request.
+Start directly with the answer.
+Avoid phrases such as "Let's look at your code"
+or "Here is the breakdown".
 
 Programming language: {language}
 User's request: {task}
 
-Analyze the following code.
+{task_instructions[task]}
 
-Instructions:
-- Use simple language suitable for a beginner.
-- Be accurate and explain your reasoning clearly.
-- If there are errors, identify the relevant lines where possible.
-- Do not invent errors if the code is correct.
-- Format your response using clear headings and bullet points.
-- If improving code, explain the important changes.
+Use simple language suitable for beginners.
+Format your response using headings, bullet points and code blocks.
 
 Code:
 {code}
