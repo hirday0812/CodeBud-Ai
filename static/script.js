@@ -87,31 +87,55 @@ clearBtn.addEventListener("click", function () {
 // TEMPORARY FRONTEND TEST
 // =================================
 
-analyzeBtn.addEventListener("click", function () {
+analyzeBtn.addEventListener("click", async () => {
   const code = codeInput.value.trim();
-
   const selectedLanguage = language.value;
-
   const selectedTask = task.value;
 
-  if (code === "") {
-    result.textContent = "Please enter some code before analysing.";
-
+  if (!code) {
+    alert("Please enter some code first.");
     return;
   }
 
-  const heading = document.createElement("h3");
-  heading.textContent = "Frontend test successful";
+  analyzeBtn.disabled = true;
+  analyzeBtn.textContent = "Analyzing...";
 
-  const languageText = document.createElement("p");
-  languageText.textContent = "Programming language: " + selectedLanguage;
+  result.innerHTML = "<p>CodeBuddy AI is analyzing your code...</p>";
 
-  const taskText = document.createElement("p");
-  taskText.textContent = "Analysis type: " + selectedTask;
+  try {
+    const response = await fetch("/analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: code,
+        language: selectedLanguage,
+        task: selectedTask,
+      }),
+    });
 
-  const message = document.createElement("p");
-  message.textContent =
-    "Your code has been received. Gemini integration will be added next.";
+    const data = await response.json();
 
-  result.replaceChildren(heading, languageText, taskText, message);
+    if (!response.ok) {
+      throw new Error(data.error || "Something went wrong.");
+    }
+
+    result.replaceChildren();
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Analysis Result";
+
+    const output = document.createElement("pre");
+    output.textContent = data.result;
+    output.style.whiteSpace = "pre-wrap";
+
+    result.appendChild(heading);
+    result.appendChild(output);
+  } catch (error) {
+    result.textContent = "Error: " + error.message;
+  } finally {
+    analyzeBtn.disabled = false;
+    analyzeBtn.textContent = "Analyze Code";
+  }
 });
