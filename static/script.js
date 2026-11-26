@@ -101,7 +101,12 @@ analyzeBtn.addEventListener("click", async () => {
   analyzeBtn.disabled = true;
   analyzeBtn.textContent = "Analyzing...";
 
-  result.innerHTML = "<p>CodeBuddy AI is analyzing your code...</p>";
+  result.innerHTML = `
+    <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Analyzing your code...</p>
+    </div>
+`;
 
   try {
     const response = await fetch("/analyze", {
