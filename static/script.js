@@ -91,10 +91,9 @@ analyzeBtn.addEventListener("click", async () => {
   const code = codeInput.value.trim();
   const selectedLanguage = language.value;
   const selectedTask = task.value;
-  console.log("Selected task:", selectedTask);
 
   if (!code) {
-    alert("Please enter some code first.");
+    result.textContent = "Please enter some code before starting the analysis.";
     return;
   }
 
@@ -102,11 +101,11 @@ analyzeBtn.addEventListener("click", async () => {
   analyzeBtn.textContent = "Analyzing...";
 
   result.innerHTML = `
-    <div class="loading-state">
-        <div class="loading-spinner"></div>
-        <p class="loading-text">Analyzing your code...</p>
-    </div>
-`;
+        <div class="loading-state">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Analyzing your code...</p>
+        </div>
+    `;
 
   try {
     const response = await fetch("/analyze", {
@@ -121,10 +120,24 @@ analyzeBtn.addEventListener("click", async () => {
       }),
     });
 
-    const data = await response.json();
+    let data;
+
+    try {
+      data = await response.json();
+    } catch {
+      throw new Error(
+        "The server returned an invalid response. Please try again.",
+      );
+    }
 
     if (!response.ok) {
-      throw new Error(data.error || "Something went wrong.");
+      throw new Error(
+        data.error || "We couldn't analyze your code. Please try again.",
+      );
+    }
+
+    if (!data.result || !data.result.trim()) {
+      throw new Error("The AI returned an empty response. Please try again.");
     }
 
     result.replaceChildren();
@@ -164,9 +177,32 @@ analyzeBtn.addEventListener("click", async () => {
     result.appendChild(heading);
     result.appendChild(output);
   } catch (error) {
-    result.textContent = "Error: " + error.message;
+    console.error("Analysis error:", error);
+
+    let message = error.message;
+
+    if (error instanceof TypeError || message.includes("Failed to fetch")) {
+      message =
+        "Unable to connect to the server. Please check your internet connection and try again.";
+    }
+
+    result.replaceChildren();
+
+    const errorBox = document.createElement("div");
+    errorBox.className = "friendly-error";
+
+    const errorHeading = document.createElement("h3");
+    errorHeading.textContent = "Something went wrong";
+
+    const errorMessage = document.createElement("p");
+    errorMessage.textContent = message;
+
+    errorBox.appendChild(errorHeading);
+    errorBox.appendChild(errorMessage);
+    result.appendChild(errorBox);
   } finally {
     analyzeBtn.disabled = false;
     analyzeBtn.textContent = "Analyze Code";
   }
 });
+
