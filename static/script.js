@@ -75,10 +75,23 @@ language.addEventListener("change", updateLanguageLabel);
 // =================================
 
 clearBtn.addEventListener("click", function () {
+  // Clear the code editor
   codeInput.value = "";
 
+  // Reset character counter
   charCount.textContent = "0 characters";
 
+  // Reset file type label
+  fileType.textContent = "No file selected";
+
+  // Restore the initial result panel
+  result.innerHTML = `
+        <div class="empty-state">
+            <p>Your analysis will appear here.</p>
+        </div>
+    `;
+
+  // Focus the editor
   codeInput.focus();
 });
 
