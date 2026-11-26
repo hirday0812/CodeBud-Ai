@@ -598,3 +598,30 @@ body.dark-mode .error-highlight {
   border-color: #704044;
   color: #ffb8b8;
 }
+
+/* =================================
+   COPY RESULT BUTTON
+================================= */
+
+.copy-btn {
+  display: inline-block;
+  margin: 12px 0 18px;
+  padding: 9px 16px;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: var(--accent-hover);
+}
+
+.copy-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}

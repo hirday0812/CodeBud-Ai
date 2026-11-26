@@ -174,7 +174,27 @@ analyzeBtn.addEventListener("click", async () => {
       }
     }
 
+    // Create copy button
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "copy-btn";
+    copyBtn.textContent = "Copy Result";
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.innerText);
+
+        copyBtn.textContent = "Copied!";
+
+        setTimeout(() => {
+          copyBtn.textContent = "Copy Result";
+        }, 2000);
+      } catch (error) {
+        copyBtn.textContent = "Copy failed";
+      }
+    });
+
     result.appendChild(heading);
+    result.appendChild(copyBtn);
     result.appendChild(output);
   } catch (error) {
     console.error("Analysis error:", error);
@@ -205,4 +225,3 @@ analyzeBtn.addEventListener("click", async () => {
     analyzeBtn.textContent = "Analyze Code";
   }
 });
-
